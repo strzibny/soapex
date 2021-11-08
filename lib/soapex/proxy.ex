@@ -53,6 +53,33 @@ defmodule Soapex.Proxy do
                 opts
               )
             end
+
+            @doc """
+              # Parameters:
+              #{Soapex.Docs.parameters(op_value)}
+
+
+              # Faults:
+              #{Soapex.Docs.faults(op_value)}
+            """
+            def unquote(:"#{Macro.underscore(op_name)}_envelope")(
+                  {unquote(Macro.escape(service_name)), unquote(Macro.escape(port_name))} =
+                    port_path,
+                  unquote_splicing(params),
+                  opts \\ []
+                ) do
+              operation_name = unquote(op_name)
+              params_map = unquote(params_list) |> Enum.into(%{})
+
+              Soapex.Request.create_envelope(
+                @t_wsdl,
+                @wsdl,
+                port_path,
+                operation_name,
+                params_map,
+                opts
+              )
+            end
           end)
         end)
       end)

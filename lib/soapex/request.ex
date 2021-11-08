@@ -24,6 +24,24 @@ defmodule Soapex.Request do
     post(data.url, envelope, headers, data, opts)
   end
 
+  def create_envelope(t_wsdl, wsdl, port_path, operation_name, parameters, opts \\ []) do
+    data = get_operation(t_wsdl, port_path, operation_name, opts)
+
+    body = create_body(data.operation, parameters, wsdl.schemes)
+    envelope = create_envelope(data, body)
+    headers = get_headers(data)
+
+    # {envelope, headers}
+    Logger.debug("Envelope: #{inspect(envelope)}")
+
+    %{
+      url: data.url,
+      envelope: envelope,
+      headers: headers,
+      data: data
+    }
+  end
+
   defp get_operation(t_wsdl, {service, port}, operation, opts \\ []) do
     service = t_wsdl[service]
     port = service[port]
