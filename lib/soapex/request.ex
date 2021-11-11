@@ -230,6 +230,8 @@ defmodule Soapex.Request do
     end
   end
 
+  def parse_success(response), do: parse_success(response, nil)
+
   defp parse_success(response, data) do
     nss = get_response_nss(response, data)
 
@@ -271,6 +273,8 @@ defmodule Soapex.Request do
         children
     end
   end
+
+  def parse_fault(response), do: parse_fault(response, nil)
 
   defp parse_fault(response, data) do
     case get_response_nss(response, data) do
