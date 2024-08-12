@@ -186,7 +186,7 @@ defmodule Soapex.Request do
   defp post(url, body, headers, data, opts) do
     Dumpster.dump(body)
 
-    case http_adapter.post(url, body, headers,
+    case http_adapter().post(url, body, headers,
            follow_redirect: true,
            max_redirect: 3,
            timeout: 10_000,
